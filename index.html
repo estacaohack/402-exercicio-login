@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lista de Tarefas</title>
+</head>
+<body ng-app="lista">
+    <style>
+        input{
+            width: 400px;
+            height: 20px;
+            border: 1px solid grey;
+            border-radius: 5px;
+        }
+
+        li{
+            margin-bottom: 5px;
+        }
+
+        .botao-criar{
+            height: 24px;
+            border: 1px solid grey;
+            border-radius: 5px;
+            background-color: rgb(24, 135, 190);
+            color: white;
+        }
+
+        .botao-apagar{
+            height: 24px;
+            border: 1px solid rgb(255, 0, 0);
+            border-radius: 5px;
+            background-color: rgb(253, 80, 80);
+            color: white;
+        }
+
+        .feita{
+            text-decoration: line-through;
+        }
+    </style>
+
+    <section ng-controller="ListaController">
+        <h1>Lista de Tarefas</h1>
+        <div>
+            <input type="text" placeholder="Digite a tarefa" ng-model="tarefa">
+            <button class="botao-criar" ng-click="criarTarefa(tarefa)">Criar Tarefa</button>
+            <button class="botao-apagar" ng-click="apagarTarefas()">Apagar Tarefas</button>
+        </div>
+
+        <ul>
+            <li ng-repeat="tarefa in tarefas"
+                ng-click="fazerTarefa(tarefa)"
+                ng-class="{'feita': tarefa.status}">{{ tarefa.texto }}
+            </li>
+        </ul>
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+    <script>
+        const app = angular.module('lista', []);
+
+        app.controller('ListaController', ($scope) => {
+            $scope.tarefas = [];
+
+            $scope.criarTarefa = (tarefa) => {
+                $scope.tarefas.push({texto: tarefa, status: false});
+                $scope.tarefa = '';
+            }
+
+            $scope.fazerTarefa = (tarefa) => {
+                tarefa.status = true;
+            }
+
+            $scope.apagarTarefas = () => {
+                $scope.tarefas = [];
+            }
+        });
+    </script>
+</body>
+</html>
