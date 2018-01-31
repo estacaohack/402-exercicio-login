@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Lista de Tarefas</title>
 </head>
-<body ng-app="lista">
+<body ng-app="lista" ng-controller="ListaController">
     <style>
         input{
             width: 400px;
@@ -40,7 +40,14 @@
         }
     </style>
 
-    <section ng-controller="ListaController">
+    <section ng-hide="autorizado">
+        <input type="text" placeholder="Digite o seu e-mail" ng-model="email">
+        <input type="text" placeholder="Digite a sua senha" ng-model="senha">
+        <button ng-click="fazerLogin(email, senha)">Login</button>
+        <p ng-show="erro">E-mail ou senha incorretos.</p>
+    </section>
+
+    <section ng-show="autorizado">
         <h1>Lista de Tarefas</h1>
         <div>
             <input type="text" placeholder="Digite a tarefa" ng-model="tarefa">
@@ -62,6 +69,13 @@
 
         app.controller('ListaController', ($scope) => {
             $scope.tarefas = [];
+            $scope.dados = {
+                email: 'caique@gmail.com',
+                senha: '123456'
+            };
+            $scope.autorizado = false;
+            $scope.erro = false;
+            // $scope.efetuado = false;
 
             $scope.criarTarefa = (tarefa) => {
                 $scope.tarefas.push({texto: tarefa, status: false});
@@ -74,6 +88,17 @@
 
             $scope.apagarTarefas = () => {
                 $scope.tarefas = [];
+            }
+
+            $scope.fazerLogin = (email, senha) => {
+                if( (email == $scope.dados.email) && (senha == $scope.dados.senha) ){
+                    $scope.autorizado = true;
+                    $scope.erro = false;
+                    $scope.efetuado = true;
+                }
+                else{
+                    $scope.erro = true;
+                }
             }
         });
     </script>
